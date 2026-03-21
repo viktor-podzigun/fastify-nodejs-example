@@ -1,11 +1,9 @@
-import Fastify from "fastify";
+import app from "./app.js";
 
-const fastify = Fastify({
-  logger: true,
-});
-
-fastify.get("/", async () => {
-  return { hello: "world" };
+const server = app({
+  logger: {
+    level: "info",
+  },
 });
 
 /**
@@ -13,9 +11,9 @@ fastify.get("/", async () => {
  */
 const start = async () => {
   try {
-    await fastify.listen({ port: 3000 });
+    await server.listen({ port: 3000 });
   } catch (err) {
-    fastify.log.error(err);
+    server.log.error(err);
     process.exit(1);
   }
 };

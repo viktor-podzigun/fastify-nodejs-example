@@ -11,17 +11,22 @@ const { describe, it } = await (async () => {
 })();
 
 const app = build();
+await app.listen();
+//@ts-ignore
+const port = app.server.address().port;
 
 describe("app.test.js", () => {
   it("should handle GET /", async () => {
     //when
-    const resp = await app.inject({
-      method: "GET",
-      url: "/",
-    });
+    const resp = await fetch(`http://localhost:${port}`);
 
     //then
-    deepEqual(resp.statusCode, 200);
-    deepEqual(resp.body, `{"hello":"world"}`);
+    deepEqual(resp.status, 200);
+    deepEqual(await resp.json(), { hello: "world" });
+  });
+
+  it("should stop app server", async () => {
+    //cleanup
+    await app.close();
   });
 });

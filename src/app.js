@@ -6,8 +6,8 @@ import fastify from "fastify";
 function build(options = {}) {
   const app = fastify(options);
 
-  app.get("/", async function () {
-    return { hello: "world" };
+  app.get("/", async function (_, resp) {
+    resp.send({ hello: "world" });
   });
 
   return app;

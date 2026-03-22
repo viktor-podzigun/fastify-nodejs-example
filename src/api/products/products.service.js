@@ -31,6 +31,16 @@ class ProductsService {
     const p = await this.dao.getById(id);
     return p;
   }
+
+  /**
+   * @param {string} id
+   * @param {BaseProduct} data
+   */
+  async update(id, data) {
+    await this.dao.save({ ...data, id });
+    const p = await this.dao.getById(id);
+    return p;
+  }
 }
 
 export default ProductsService;

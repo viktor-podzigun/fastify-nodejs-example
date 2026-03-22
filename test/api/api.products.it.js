@@ -77,7 +77,7 @@ describe("api.products.it.js", () => {
     });
   });
 
-  describe("POST /api/products/:id", () => {
+  describe("GET /api/products/:id", () => {
     it("should return 400 BadRequest if invalid uuid", async () => {
       //when
       const resp = await fetch(`${productsUrl}/123`);
@@ -103,7 +103,7 @@ describe("api.products.it.js", () => {
     it("should return previously created product", async () => {
       //given
       if (!created) {
-        return fail("");
+        return fail("no created product!");
       }
 
       //when
@@ -112,6 +112,70 @@ describe("api.products.it.js", () => {
       //then
       deepEqual(resp.status, 200);
       deepEqual(await resp.json(), created);
+    });
+  });
+
+  describe("PUT /api/products/:id", () => {
+    it("should return 400 BadRequest if invalid uuid", async () => {
+      //given
+      const reqData = { ...created, id: undefined };
+
+      //when
+      const resp = await fetch(`${productsUrl}/1-2-3`, {
+        method: "PUT",
+        body: JSON.stringify(reqData),
+        headers,
+      });
+
+      //then
+      await assertBadRequest(
+        resp,
+        `params/id must match pattern "^(?i:[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12})$"`,
+      );
+    });
+
+    it("should return 404 NotFound if not existing uuid", async () => {
+      //given
+      const reqData = { ...created, id: undefined };
+      const id = crypto.randomUUID();
+
+      //when
+      const resp = await fetch(`${productsUrl}/${id}`, {
+        method: "PUT",
+        body: JSON.stringify(reqData),
+        headers,
+      });
+
+      //then
+      await assertNotFound(resp, "Product with specified id is not found");
+    });
+
+    it("should update previously created product", async () => {
+      //given
+      if (!created) {
+        return fail("no created product!");
+      }
+
+      //given
+      const reqData = {
+        name: "updated name",
+        description: "updated desc",
+        price: 456,
+        category: "electronics",
+        inStock: true,
+      };
+
+      //when
+      const resp = await fetch(`${productsUrl}/${created.id}`, {
+        method: "PUT",
+        body: JSON.stringify(reqData),
+        headers,
+      });
+
+      //then
+      const updated = /** @type {Product} */ (await resp.json());
+      deepEqual(resp.status, 200);
+      deepEqual(updated, { id: created.id, ...reqData });
     });
   });
 

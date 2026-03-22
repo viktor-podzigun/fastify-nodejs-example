@@ -19,11 +19,44 @@ async function products(app) {
   /** @type {ProductsService} */
   const service = app.getDecorator("productsService");
 
-  app.post("/", { schema: { body: postSchema } }, async (req, resp) => {
-    const data = /** @type {BaseProduct} */ (req.body);
-    const res = await service.create(data);
-    resp.status(201).send(res);
-  });
+  app.post(
+    "/",
+    {
+      schema: {
+        body: postSchema,
+        response: { 201: getSchema },
+      },
+    },
+    async (req, resp) => {
+      const data = /** @type {BaseProduct} */ (req.body);
+      const res = await service.create(data);
+      resp.status(201).send(res);
+    },
+  );
+
+  app.put(
+    "/:id",
+    {
+      schema: {
+        params: paramsSchema,
+        body: postSchema,
+        response: { 200: getSchema, 404: errorSchema },
+      },
+    },
+    async (req, resp) => {
+      const params = /** @type {any} */ (req.params);
+      if (!(await service.getById(params.id))) {
+        resp
+          .status(404)
+          .send({ error: "Product with specified id is not found" });
+        return;
+      }
+
+      const data = /** @type {BaseProduct} */ (req.body);
+      const res = await service.update(params.id, data);
+      resp.send(res);
+    },
+  );
 
   app.get(
     "/:id",

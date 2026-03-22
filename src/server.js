@@ -23,4 +23,4 @@ const start = async () => {
   }
 };
 
-start();
+await start();

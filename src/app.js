@@ -1,15 +1,12 @@
 import fastify from "fastify";
+import apiRoutes from "./api/api.routes.js";
 
 /**
- * @param {Object} options plugin options, refer to https://fastify.dev/docs/latest/Reference/Plugins/#plugin-options
+ * @param {Object} options
  */
 function build(options = {}) {
   const app = fastify(options);
-
-  app.get("/", async function (_, resp) {
-    resp.send({ hello: "world" });
-  });
-
+  app.register(apiRoutes, { prefix: "/api" });
   return app;
 }
 

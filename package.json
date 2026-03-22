@@ -4,16 +4,15 @@
   "description": "Example CRUD API using Fastify Web framework",
   "engines": {
     "node": ">=24.10.0",
-    "npm": ">=10.9.2",
-    "bun": ">=1"
+    "npm": ">=10.9.2"
   },
   "type": "module",
   "scripts": {
     "start:dev": "node --trace-deprecation --watch ./src/server.js",
     "start:prod": "node ./src/server.js",
     "start:multi": "node ./src/serverMulti.js",
-    "lint": "quick-lint-js ./src/*.js ./test/*.js",
-    "test": "tsc && bun test && node ./test/all.js",
+    "lint": "quick-lint-js ./src/**/*.js ./test/**/*.js",
+    "test": "tsc && node ./test/all.js",
     "format": "prettier **/*.js --write",
     "formatCheck": "prettier **/*.js --check"
   },

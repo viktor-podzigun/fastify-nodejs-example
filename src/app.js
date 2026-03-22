@@ -1,12 +1,12 @@
 /**
- * @import { DatabaseSync } from "node:sqlite"
+ * @import DbWrapper from "./DbWrapper.js"
  */
 import { readFile } from "fs/promises";
 import fastify from "fastify";
 import apiRoutes from "./api/api.routes.js";
 
 /**
- * @param {DatabaseSync} db
+ * @param {DbWrapper} db
  */
 async function applyDbSchema(db) {
   const url = new URL("./sql/create_products.sql", import.meta.url);
@@ -16,7 +16,7 @@ async function applyDbSchema(db) {
 
 /**
  * @param {object} options
- * @param {DatabaseSync} db
+ * @param {DbWrapper} db
  */
 async function build(options, db) {
   await applyDbSchema(db);

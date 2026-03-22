@@ -1,4 +1,4 @@
-import { DatabaseSync } from "node:sqlite";
+import DbWrapper from "./DbWrapper.js";
 import app from "./app.js";
 
 const server = await app(
@@ -7,7 +7,7 @@ const server = await app(
       level: "info",
     },
   },
-  new DatabaseSync(process.env.DB_NAME ?? ".db"),
+  new DbWrapper(process.env.DB_NAME ?? ".db"),
 );
 
 /**

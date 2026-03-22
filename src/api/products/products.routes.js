@@ -80,9 +80,19 @@ async function products(app) {
     },
   );
 
-  app.get("/", async (_, resp) => {
-    resp.send({ hello: "world" });
-  });
+  app.get(
+    "/",
+    {
+      schema: {
+        params: paramsSchema,
+        response: { 200: { type: "array", items: getSchema } },
+      },
+    },
+    async (_, resp) => {
+      const res = await service.getAll();
+      resp.send(res);
+    },
+  );
 }
 
 export default products;

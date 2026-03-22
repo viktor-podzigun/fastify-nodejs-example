@@ -14,6 +14,9 @@ const headers = [["Content-Type", "application/json"]];
 /** @type {Product | null} */
 let created = null;
 
+/** @type {Product | null} */
+let updated = null;
+
 describe("api.products.it.js", () => {
   describe("POST /api/products", () => {
     it("should return 400 BadRequest if name is missing", async () => {
@@ -173,19 +176,19 @@ describe("api.products.it.js", () => {
       });
 
       //then
-      const updated = /** @type {Product} */ (await resp.json());
+      updated = /** @type {Product} */ (await resp.json());
       deepEqual(resp.status, 200);
       deepEqual(updated, { id: created.id, ...reqData });
     });
   });
 
-  it("should handle GET /api/products", async () => {
+  it("GET /api/products should return existing products", async () => {
     //when
     const resp = await fetch(productsUrl);
 
     //then
     deepEqual(resp.status, 200);
-    deepEqual(await resp.json(), { hello: "world" });
+    deepEqual(await resp.json(), [updated]);
   });
 });
 

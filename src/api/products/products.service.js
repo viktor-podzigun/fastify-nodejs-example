@@ -14,6 +14,14 @@ class ProductsService {
   }
 
   /**
+   * @returns {Promise<readonly Product[]>}
+   */
+  async getAll() {
+    const p = await this.dao.getAll();
+    return p;
+  }
+
+  /**
    * @param {string} id
    * @returns {Promise<Product | undefined>}
    */

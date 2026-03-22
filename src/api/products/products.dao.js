@@ -29,13 +29,25 @@ class ProductsDao {
   }
 
   /**
+   * @returns {Promise<readonly Product[]>}
+   */
+  async getAll() {
+    return this.db.transaction(() => {
+      const query = this.db.prepare(/* sql */ `
+        SELECT id, name, description, price, category, inStock FROM ${tableName}
+        ;`);
+      return query.all().map(rowExtractor);
+    })();
+  }
+
+  /**
    * @param {string} id
    */
   async getById(id) {
     return this.db.transaction(() => {
       const query = this.db.prepare(/* sql */ `
-        SELECT id, name, description, price, category, inStock
-          FROM ${tableName} WHERE id = ?
+        SELECT id, name, description, price, category, inStock FROM ${tableName}
+          WHERE id = ?
         ;`);
       const row = query.get(id);
       return row ? rowExtractor(row) : undefined;

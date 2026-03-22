@@ -83,6 +83,17 @@ class ProductsDao {
         );
     })();
   }
+
+  /**
+   * @param {string} id
+   */
+  async delete(id) {
+    return this.db.transaction(() => {
+      this.db
+        .prepare(/* sql */ `DELETE FROM ${tableName} WHERE id = ?;`)
+        .run(id);
+    })();
+  }
 }
 
 export default ProductsDao;

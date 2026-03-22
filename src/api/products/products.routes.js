@@ -58,6 +58,28 @@ async function products(app) {
     },
   );
 
+  app.delete(
+    "/:id",
+    {
+      schema: {
+        params: paramsSchema,
+        response: { 204: getSchema, 404: errorSchema },
+      },
+    },
+    async (req, resp) => {
+      const params = /** @type {any} */ (req.params);
+      if (!(await service.getById(params.id))) {
+        resp
+          .status(404)
+          .send({ error: "Product with specified id is not found" });
+        return;
+      }
+
+      await service.delete(params.id);
+      resp.status(204).send("");
+    },
+  );
+
   app.get(
     "/:id",
     {

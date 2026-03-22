@@ -49,6 +49,14 @@ class ProductsService {
     const p = await this.dao.getById(id);
     return p;
   }
+
+  /**
+   * @param {string} id
+   * @returns {Promise<void>}
+   */
+  async delete(id) {
+    await this.dao.delete(id);
+  }
 }
 
 export default ProductsService;

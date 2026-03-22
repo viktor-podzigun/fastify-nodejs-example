@@ -190,6 +190,56 @@ describe("api.products.it.js", () => {
     deepEqual(resp.status, 200);
     deepEqual(await resp.json(), [updated]);
   });
+
+  describe("DELETE /api/products/:id", () => {
+    it("should return 400 BadRequest if invalid uuid", async () => {
+      //when
+      const resp = await fetch(`${productsUrl}/1-2-3`, { method: "DELETE" });
+
+      //then
+      await assertBadRequest(
+        resp,
+        `params/id must match pattern "^(?i:[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12})$"`,
+      );
+    });
+
+    it("should return 404 NotFound if not existing uuid", async () => {
+      //given
+      const id = crypto.randomUUID();
+
+      //when
+      const resp = await fetch(`${productsUrl}/${id}`, { method: "DELETE" });
+
+      //then
+      await assertNotFound(resp, "Product with specified id is not found");
+    });
+
+    it("should delete existing product", async () => {
+      //given
+      if (!created) {
+        return fail("no created product!");
+      }
+
+      //when
+      const resp = await fetch(`${productsUrl}/${created.id}`, {
+        method: "DELETE",
+      });
+
+      //then
+      const res = await resp.text();
+      deepEqual(resp.status, 204);
+      deepEqual(res, "");
+    });
+  });
+
+  it("GET /api/products should return empty list", async () => {
+    //when
+    const resp = await fetch(productsUrl);
+
+    //then
+    deepEqual(resp.status, 200);
+    deepEqual(await resp.json(), []);
+  });
 });
 
 /**

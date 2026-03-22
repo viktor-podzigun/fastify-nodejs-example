@@ -36,5 +36,5 @@ npm run start:multi
 Api is available at the following endpoint (using default port):
 
 ```bash
-http://127.0.0.1:3000/api
+http://localhost:3000/api/products
 ```

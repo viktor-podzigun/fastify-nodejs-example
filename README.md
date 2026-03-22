@@ -5,10 +5,30 @@
 
 Example CRUD API using Fastify HTTP framework
 
+## How to build
+
+```bash
+npm run lint && npm run test
+```
+
 ## How to run
 
-Run the api server in dev/refresh mode:
+Run the app server in dev/refresh mode:
 
 ```bash
 npm run start:dev
+```
+
+Run the app server in production mode:
+
+```bash
+npm run start:prod
+```
+
+## Accessing the Api
+
+Api is available at the following endpoint (using default port):
+
+```bash
+http://127.0.0.1:3000/api
 ```

@@ -11,7 +11,12 @@ const server = app({
  */
 const start = async () => {
   try {
-    await server.listen({ port: 3000 });
+    //load .env file
+    process.loadEnvFile();
+
+    const port = parseInt(process.env.APP_PORT ?? "3000");
+
+    await server.listen({ port });
   } catch (err) {
     server.log.error(err);
     process.exit(1);

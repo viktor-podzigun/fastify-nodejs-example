@@ -10,7 +10,8 @@
   "type": "module",
   "scripts": {
     "start:dev": "node --trace-deprecation --watch ./src/server.js",
-    "lint": "quick-lint-js ./src/**/*.js ./test/**/*.js",
+    "start:prod": "node ./src/server.js",
+    "lint": "quick-lint-js ./src/*.js ./test/*.js",
     "test": "tsc && bun test && node ./test/all.js",
     "format": "prettier **/*.js --write",
     "formatCheck": "prettier **/*.js --check"
@@ -32,7 +33,7 @@
     "fastify": "^5.8.2"
   },
   "devDependencies": {
-    "@types/node": "^18",
+    "@types/node": "^20",
     "c8": "^7.14.0",
     "prettier": "^3.8.1",
     "quick-lint-js": "^3.2.0",

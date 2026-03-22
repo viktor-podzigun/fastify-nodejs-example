@@ -1,5 +1,5 @@
 import fastify from "fastify";
-import products from "./products/routes.js";
+import products from "./products/products.routes.js";
 
 /**
  * Encapsulates the routes

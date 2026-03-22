@@ -1,1 +1,1 @@
-await import("./app.test.js");
+await import("./it.test.js");

@@ -1,10 +1,14 @@
+import { DatabaseSync } from "node:sqlite";
 import app from "./app.js";
 
-const server = app({
-  logger: {
-    level: "info",
+const server = await app(
+  {
+    logger: {
+      level: "info",
+    },
   },
-});
+  new DatabaseSync(process.env.DB_NAME ?? ".db"),
+);
 
 /**
  * Run the server!

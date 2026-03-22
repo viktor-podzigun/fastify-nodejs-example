@@ -18,6 +18,9 @@ pids
 # Env
 .env
 
+# SQLite DB
+.db
+
 # Coverage directory used by tools like istanbul
 coverage
 *.lcov

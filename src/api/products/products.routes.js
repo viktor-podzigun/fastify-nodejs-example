@@ -1,9 +1,9 @@
 /**
- * @import { BaseProduct } from "./data.js"
+ * @import { BaseProduct } from "./products.data.js"
  */
 import crypto from "node:crypto";
 import fastify from "fastify";
-import { postSchema } from "./data.js";
+import { postSchema } from "./products.data.js";
 
 /**
  * Encapsulates the routes

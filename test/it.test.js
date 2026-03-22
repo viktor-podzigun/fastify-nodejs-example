@@ -4,7 +4,7 @@
 
 import { describe, it } from "node:test";
 
-describe("app.test.js", async () => {
+describe("it.test.js", async () => {
   /** @type {FastifyInstance | null} */
   let app = null;
 
@@ -13,7 +13,7 @@ describe("app.test.js", async () => {
     app = (await import("./getApp.js")).default;
   });
 
-  describe("integration-tests", async () => {
+  describe("api-integration-tests", async () => {
     await import("./api/api.products.it.js");
   });
 

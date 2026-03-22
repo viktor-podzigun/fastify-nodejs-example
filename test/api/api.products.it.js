@@ -1,5 +1,5 @@
 /**
- * @import { Product } from "../../src/api/products/data.js"
+ * @import { Product } from "../../src/api/products/products.data.js"
  */
 import { describe, it } from "node:test";
 import { deepEqual } from "node:assert/strict";

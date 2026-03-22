@@ -3,7 +3,7 @@
 
 # fastify-nodejs-example
 
-Example CRUD API using Fastify HTTP framework
+Example CRUD API using [Fastify](https://fastify.dev/) Web framework.
 
 ## How to build
 

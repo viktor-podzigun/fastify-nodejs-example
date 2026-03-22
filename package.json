@@ -11,6 +11,7 @@
   "scripts": {
     "start:dev": "node --trace-deprecation --watch ./src/server.js",
     "start:prod": "node ./src/server.js",
+    "start:multi": "node ./src/serverMulti.js",
     "lint": "quick-lint-js ./src/*.js ./test/*.js",
     "test": "tsc && bun test && node ./test/all.js",
     "format": "prettier **/*.js --write",

@@ -25,6 +25,12 @@ Run the app server in production mode:
 npm run start:prod
 ```
 
+Run the app server in cluster mode:
+
+```bash
+npm run start:multi
+```
+
 ## Accessing the Api
 
 Api is available at the following endpoint (using default port):

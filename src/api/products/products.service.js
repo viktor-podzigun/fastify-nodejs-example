@@ -1,5 +1,5 @@
 /**
- * @import { BaseProduct } from "./products.data.js"
+ * @import { BaseProduct, Product } from "./products.data.js"
  */
 import crypto from "node:crypto";
 import ProductsDao from "./products.dao.js";
@@ -11,6 +11,15 @@ class ProductsService {
   constructor(dao) {
     /** @readonly @type {ProductsDao} */
     this.dao = dao;
+  }
+
+  /**
+   * @param {string} id
+   * @returns {Promise<Product | undefined>}
+   */
+  async getById(id) {
+    const p = await this.dao.getById(id);
+    return p;
   }
 
   /**

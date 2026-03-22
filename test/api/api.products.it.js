@@ -1,14 +1,18 @@
 /**
  * @import { Product } from "../../src/api/products/products.data.js"
  */
+import crypto from "node:crypto";
 import { describe, it } from "node:test";
-import { deepEqual } from "node:assert/strict";
+import { deepEqual, fail } from "node:assert/strict";
 import app from "../getApp.js";
 
 //@ts-ignore
 const port = app.server.address().port;
 const productsUrl = `http://localhost:${port}/api/products`;
 const headers = [["Content-Type", "application/json"]];
+
+/** @type {Product | null} */
+let created = null;
 
 describe("api.products.it.js", () => {
   describe("POST /api/products", () => {
@@ -45,7 +49,7 @@ describe("api.products.it.js", () => {
       await assertBadRequest(resp, "body/price must be >= 1");
     });
 
-    it("should store new product in db and return 201 with saved data", async () => {
+    it("should store new product in db and return 201 with created info", async () => {
       //given
       const reqData = {
         name: "test name",
@@ -63,13 +67,51 @@ describe("api.products.it.js", () => {
       });
 
       //then
-      const resDdata = /** @type {Product} */ (await resp.json());
+      created = /** @type {Product} */ (await resp.json());
       deepEqual(resp.status, 201);
-      deepEqual(resDdata.id.length, 36);
-      deepEqual(resDdata, {
-        id: resDdata.id,
+      deepEqual(created.id.length, 36);
+      deepEqual(created, {
+        id: created.id,
         ...reqData,
       });
+    });
+  });
+
+  describe("POST /api/products/:id", () => {
+    it("should return 400 BadRequest if invalid uuid", async () => {
+      //when
+      const resp = await fetch(`${productsUrl}/123`);
+
+      //then
+      await assertBadRequest(
+        resp,
+        `params/id must match pattern "^(?i:[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12})$"`,
+      );
+    });
+
+    it("should return 404 NotFound if not existing uuid", async () => {
+      //given
+      const id = crypto.randomUUID();
+
+      //when
+      const resp = await fetch(`${productsUrl}/${id}`);
+
+      //then
+      await assertNotFound(resp, "Product with specified id is not found");
+    });
+
+    it("should return previously created product", async () => {
+      //given
+      if (!created) {
+        return fail("");
+      }
+
+      //when
+      const resp = await fetch(`${productsUrl}/${created.id}`);
+
+      //then
+      deepEqual(resp.status, 200);
+      deepEqual(await resp.json(), created);
     });
   });
 
@@ -94,5 +136,16 @@ async function assertBadRequest(resp, message) {
     error: "Bad Request",
     message,
     statusCode: 400,
+  });
+}
+
+/**
+ * @param {Response} resp
+ * @param {string} error
+ */
+async function assertNotFound(resp, error) {
+  deepEqual(resp.status, 404);
+  deepEqual(await resp.json(), {
+    error,
   });
 }

@@ -45,7 +45,7 @@ jobs:
           npx tsc
           npx quick-lint-js ./src/*.js ./test/*.js
           npm run formatCheck
-          NODE_V8_COVERAGE=coverage0 npx c8 -r lcovonly --all --exclude "src/server.js" --exclude "test/**" node --experimental-test-coverage ./test/all.js
+          NODE_V8_COVERAGE=coverage0 npx c8 -r lcovonly --all --exclude "src/server.js" --exclude "src/serverMulti.js" --exclude "test/**" node --experimental-test-coverage ./test/all.js
 
       - name: Report coverage to Coveralls
         uses: coverallsapp/github-action@v2
